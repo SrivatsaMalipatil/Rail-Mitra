@@ -1,0 +1,171 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>RailMitra Web App</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom Styles -->
+    <style>
+        /* Gradient animation with a smooth transition */
+        @keyframes gradient-shift {
+            0% {
+                background-position: 0% 50%; /* Start at the left */
+            }
+            100% {
+                background-position: 100% 50%; /* End at the right */
+            }
+        }
+
+        /* Gradient background with smooth animation */
+        .bg-smooth-gradient {
+            background: linear-gradient(90deg, #5356FF, #378CE7, #67C6E3); /* Color palette */
+            background-size: 300% 300%; /* Large size for smooth animation */
+            animation: gradient-shift 30s linear infinite; /* Slow and continuous animation */
+        }
+
+        /* Custom button styles */
+        .btn-primary {
+            background-color: #5356FF; /* Deep blue */
+            color: white; /* White text */
+        }
+
+        /* Navigation Bar styles */
+        .navbar {
+            background-color: #5356FF; /* Deep blue */
+        }
+
+        /* User icon styles */
+        .user-icon {
+            font-size: 1.5rem; /* Larger size */
+            color: white; /* White color */
+        }
+
+        /* Smooth scrolling for the entire document */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Card Styling */
+        .card {
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth animations */
+        }
+
+        .card:hover {
+            transform: translateY(-5px); /* Hover effect */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3); /* Hover shadow */
+        }
+
+        /* Image placeholder styles */
+        .image-placeholder {
+            width: 100%; /* Full width */
+            height: 200px; /* Defined height */
+            display: flex; /* Flexbox for centering */
+            justify-content: center; /* Horizontally centered */
+            align-items: center; /* Vertically centered */
+            background-color: #f8f9fa; /* Light gray background */
+            color: #6c757d; /* Gray text color */
+        }
+    </style>
+</head>
+<body class="bg-smooth-gradient text-white"> <!-- Gradient background with smooth animation -->
+    <!-- Navigation Bar -->
+    <nav class="navbar navbar-expand-lg navbar-dark"> <!-- Navbar with deep blue background -->
+        <a class="navbar-brand" href="#home">RailMitra</a> <!-- Brand -->
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="#navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span> <!-- Icon for toggle -->
+        </button>
+        <div class="collapse navbar-collapse" id="navbarNav"> <!-- Responsive section -->
+            <ul class="navbar-nav ms-auto"> <!-- Navigation items -->
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#home">Home</a> <!-- Navigation link -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#schedules">Train Schedules</a> <!-- Navigation link -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#ewallet">E-Wallet</a> <!-- E-Wallet link -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#reservations">Reservations</a> <!-- Reservations link -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#community-chat">Community Chat</a> <!-- Community Chat link -->
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link text-white" href="#user-profile"><i class="fas fa-user user-icon"></i></a> <!-- User icon -->
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <!-- Content Section -->
+    <div class="container mt-5"> <!-- Bootstrap container -->
+       <!-- Home Section -->
+       <div class="card mb-4"> <!-- Bootstrap card with shadow -->
+           <div class="card-body"> <!-- Card content -->
+               <h2 id="home" class="card-title text-primary">Welcome to RailMitra</h2> <!-- Section title -->
+               <div class="image-placeholder">
+                   <img src="https://via.placeholder.com/200" alt="Image Placeholder" style="max-width: 100%; height: auto;" /> <!-- Placeholder image -->
+               </div> <!-- Placeholder for images -->
+               <p class="mt-4">RailMitra is your ultimate companion for planning train journeys across India. With real-time updates, seamless booking options, and detailed train information, we're here to ensure your travels are smooth and stress-free.</p> <!-- Descriptive text -->
+           </div>
+       </div>
+
+       <!-- Train Schedules Section -->
+       <a href="train-schedules.html" class="card mb-4"> <!-- Link to Train Schedules page -->
+           <div class="card-body"> <!-- Card content -->
+               <h2 id="schedules" class="card-title text-primary">Train Schedules</h2> <!-- Section heading -->
+               <div class="image-placeholder">
+                   <img src="https://via.placeholder.com/200" alt="Image Placeholder" style="max-width: 100%; height: auto;" /> <!-- Placeholder image -->
+               </div> <!-- Placeholder -->
+               <p class="mt-4">Explore the latest train schedules to find the best options for your journey. With a variety of express, superfast, and local trains, RailMitra helps you find the perfect match for your travel needs.</p> <!-- Descriptive text -->
+           </div>
+       </a>
+
+       <!-- E-Wallet Section -->
+       <a href="ewallet.html" class="card mb-4"> <!-- Link to E-Wallet page -->
+           <div class="card-body"> <!-- Card content -->
+               <h2 id="ewallet" class="card-title text-primary">E-Wallet</h2> <!-- Section heading -->
+               <div class="image-placeholder">
+                   <img src="https://via.placeholder.com/200" alt="Image Placeholder" style="max-width: 100%; height: auto;" /> <!-- Placeholder image -->
+               </div>
+               <p class="mt-4">Use our secure e-wallet to manage your payments, add funds, and make transactions with ease during your train journeys.</p> <!-- Descriptive text -->
+           </div>
+       </a>
+
+       <!-- Reservation Section -->
+       <a href="reservation.html" class="card mb-4"> <!-- Link to Reservations page -->
+           <div class="card-body"> <!-- Card content -->
+               <h2 class="card-title text-primary">Reservations</h2> <!-- Section heading -->
+               <div class="image-placeholder">
+                   <img src="https://via.placeholder.com/200" alt="Image Placeholder" style="max-width: 100%; height: auto;" /> <!-- Placeholder image -->
+               </div>
+               <p class="mt-4">Book your train reservations with RailMitra. Find the best seats, check availability, and manage your reservations easily.</p> <!-- Descriptive text -->
+           </div>
+       </a>
+
+       <!-- Community Chat Section -->
+       <a href="community-chat.html" class="card"> <!-- Link to Community Chat page -->
+           <div class="card-body"> <!-- Card content -->
+               <h2 class="card-title text-primary">Community Chat</h2> <!-- Section heading -->
+               <div class="image-placeholder">
+                   <img src="https://via.placeholder.com/200" alt="Image Placeholder" style="max-width: 100%; height: auto;" /> <!-- Placeholder image -->
+               </div>
+               <p class="mt-4">Join our community chat to connect with other travelers. Share your experiences, get tips, and stay updated with the latest travel information.</p> <!-- Descriptive text -->
+           </div>
+       </a>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-primary text-white text-center py-4"> <!-- Footer with deep blue -->
+        &copy; 2024 RailMitra. All rights reserved.
+    </footer>
+
+   <!-- Bootstrap JS and Dependencies -->
+   <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script> <!-- jQuery -->
+   <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> <!-- Bootstrap JS -->
+</body>
+</html>

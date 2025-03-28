@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Indian Railways Reservation</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" />
+    <!-- Google Fonts for Custom Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" />
+    <!-- Custom CSS for Gradient Background and Animations -->
+    <style>
+        body {
+            /* Color Palette Variables */
+            --primary-color: #5356FF; /* Dark Blue */
+            --secondary-color: #378CE7; /* Medium Blue */
+            --tertiary-color: #67C6E3; /* Light Blue */
+            --background-color: #DFF5FF; /* Very Light Blue */
+
+            /* Gradient Background */
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color), var(--tertiary-color)); /* Gradient background */
+            font-family: 'Poppins', sans-serif; /* Custom font */
+            min-height: 100vh; /* Ensure full screen coverage */
+            display: flex;
+            flex-direction: column; /* Flexbox for vertical layout */
+            justify-content: space-between; /* Space between content and footer */
+        }
+
+        /* Card Styling with Animation */
+        .reservation-card {
+            background-color: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Shadow effect */
+            transition: transform 0.3s, box-shadow 0.3s; /* Smooth animations */
+        }
+
+        .reservation-card:hover {
+            transform: translateY(-10px); /* Hover effect */
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3); /* Increased shadow */
+        }
+
+        /* Form Header with Animation */
+        .form-header {
+            text-align: center;
+            color: var(--primary-color); /* Dark blue for the header */
+            margin-bottom: 20px;
+            animation: fadeIn 1s ease-in; /* Smooth animation on load */
+        }
+
+        /* Input Field Styling */
+        .form-control {
+            border: 1px solid var(--secondary-color); /* Blue border */
+            transition: border-color 0.3s, box-shadow 0.3s; /* Smooth transitions */
+        }
+
+        .form-control:focus {
+            border-color: var(--primary-color); /* Darker blue on focus */
+            box-shadow: 0 0 10px rgba(83, 86, 255, 0.3); /* Blue glow */
+        }
+
+        /* Submit Button Styling */
+        .btn-custom {
+            background-color: var(--primary-color); /* Dark blue */
+            color: white;
+            transition: background-color 0.3s; /* Smooth hover transition */
+        }
+
+        .btn-custom:hover {
+            background-color: var(--secondary-color); /* Change color on hover */
+        }
+
+        /* Footer Styling */
+        .footer {
+            background-color: var(--primary-color); /* Dark blue background */
+            color: white; /* White text */
+            text-align: center; /* Centered text */
+            padding: 10px;
+            border-radius: 10px; /* Rounded corners */
+            position: fixed; /* Fixed at the bottom */
+            bottom: 0;
+            width: 100%; /* Full width to span the screen */
+        }
+
+        .pricing-table {
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 2px 4px rgba(0,0,0,.1);
+            overflow: hidden;
+            max-width: 600px;
+            margin: auto;
+        }
+
+        .pricing-card {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .pricing-title {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+
+        .pricing-price {
+            font-size: 36px;
+            font-weight: bold;
+            color: #378CE7;
+            margin-bottom: 20px;
+        }
+
+        .pricing-list li {
+            font-size: 16px;
+            line-height: 1.5;
+            color: #666;
+            margin-bottom: 10px;
+           
+        }
+        .add-passenger-btn {
+            background-color: var(--secondary-color); /* Use the secondary color from your CSS */
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .add-passenger-btn:hover {
+            background-color: var(--tertiary-color); /* Change color on hover */
+        }
+        /* Custom styles for the Remove Passenger button */
+.remove-passenger-btn {
+    background-color: #dc3545; /* Red background */
+    color: white; /* White text */
+    border: none; /* No border */
+    padding: 5px 10px; /* Padding for size */
+    border-radius: 25px; /* Rounded corners */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for the Remove Passenger button */
+.remove-passenger-btn:hover {
+    background-color: #c82333; /* Darker red on hover */
+}
+#confirmationTextContainer {
+    background-color: rgba(0, 0, 0, 0.1); /* Light gray background */
+    padding: 10px;
+    border-radius: 5px;
+    text-align: center;
+    margin: 0 auto;
+    width: fit-content;
+}
+
+        
+    </style>
+</head>
+<body>
+<div class="container mt-5">
+    <!-- Reservation Card -->
+    <div class="reservation-card">
+        <!-- Form Header -->
+        <h2 class="form-header">Railway Reservation Form</h2>
+
+        <!-- Form Content -->
+        <form id="reservation-form">
+            <!-- Passenger Information -->
+            <div class="form-group">
+                <label for="passenger-name">Passenger Name</label>
+                <input type="text" id="passenger-name" class="form-control" placeholder="Enter your name" required>
+            </div>
+
+            <div class="form-group">
+                <label for="passenger-age">Passenger Age</label>
+                <input type="number" id="passenger-age" class="form-control" placeholder="Enter your age" required>
+            </div>
+
+            <!-- Journey Information -->
+            <div class="form-group">
+                <label for="train-number">Train Number</label>
+                <input type="text" id="train-number" class="form-control" placeholder="Enter train number" required>
+            </div>
+
+            <div class="form-group">
+                <label for="departure-station">Departure Station</label>
+                <input type="text" id="departure-station" class="form-control" placeholder="Enter departure station" required>
+            </div>
+
+            <div class="form-group">
+                <label for="arrival-station">Arrival Station</label>
+                <input type="text" id="arrival-station" class="form-control" placeholder="Enter arrival station" required>
+            </div>
+
+            <div class="form-group">
+                <label for="journey-date">Journey Date</label>
+                <input type="date" id="journey-date" class="form-control" required>
+            </div>
+
+            <!-- Class of Travel -->
+            <div class="form-group">
+                <label for="class-of-travel">Class of Travel</label>
+                <select id="class-of-travel" class="form-control" required>
+                    <option value="">Select Class</option>
+                    <option value="AC">AC</option>
+                    <option value="SL">Sleeper Class (SL)</option>
+                    <option value="2S">General (2S)</option>
+                </select>
+            </div>
+
+            <!-- Berth Preference -->
+            <div class="form-group">
+                <label for="berth-preference">Berth Preference</label>
+                <select id="berth-preference" class="form-control" required>
+                    <option value="">Select Berth Preference</option>
+                    <option value="upper">Upper Berth</option>
+                    <option value="middle">Middle Berth</option>
+                    <option value="lower">Lower Berth</option>
+                </select>
+            </div>
+
+  
+
+
+              <!-- Pricing Table -->
+              <div class="pricing-table">
+                <div class="pricing-card">
+                    <h2 class="pricing-title">Ticket Price</h2>
+                    <h3 class="pricing-price" id="ticket-price">₹ 0.00</h3>
+                    <ul class="pricing-list">
+                        <li id="pricing-distance">Distance: 0 km</li>
+                        <li id="pricing-class">Class of Travel: AC</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Payment Method -->
+            <div class="form-group">
+                <label for="payment-method">Payment Method</label>
+                <select id="payment-method" class="form-control" required>
+                    <option value="">Select Payment Method</option>
+                  
+                    <option value="wallet">e-Wallet</option>
+                </select>
+            </div>
+
+
+
+            <!-- Submit Button -->
+            <div class="form-group text-center">
+                <button type="submit" class="btn btn-custom">Reserve Ticket</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<!-- Confirmation Modal -->
+<!-- Confirmation Modal -->
+<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="confirmationModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="confirmationModalLabel">Payment Confirmation</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div id="confirmationTextContainer">
+                    <p id="confirmationText"></p>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-primary" data-dismiss="modal" onclick="hideConfirmationModal()">OK</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+</div>
+
+
+
+<!-- Footer -->
+<footer class="footer">
+<div class="container">
+    <p>&copy; 2024 Indian Railways. All rights reserved.</p>
+</div>
+</footer>
+
+<!-- Bootstrap and jQuery JS -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+<!-- Firebase Configuration and Firestore -->
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script> <!-- Add Firebase Auth -->
+<script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-firestore.js"></script>s
+<script>
+    // Initialize Firebase
+    var firebaseConfig = {
+        apiKey: "AIzaSyCzF2lQO3f2O7BxCMStuwTZXiP5GCccH48",
+        authDomain: "railmitra-29557.firebaseapp.com",
+        projectId: "railmitra-29557",
+        storageBucket: "railmitra-29557.appspot.com",
+        messagingSenderId: "269756755900",
+        appId: "1:269756755900:web:69d475147946f789fdc5b9",
+        measurementId: "G-T0MQQ6JMLD"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.firestore();
+    
+    document.getElementById('train-number').addEventListener('input', updateTicketPrice);
+    document.getElementById('departure-station').addEventListener('input', updateTicketPrice);
+    document.getElementById('arrival-station').addEventListener('input', updateTicketPrice);
+    document.getElementById('class-of-travel').addEventListener('change', updateTicketPrice);
+    
+    // Update the updateTicketPrice function
+    function updateTicketPrice() {
+        const trainNumber = document.getElementById('train-number').value;
+        const departureStation = document.getElementById('departure-station').value;
+        const arrivalStation = document.getElementById('arrival-station').value;
+        const classOfTravel = document.getElementById('class-of-travel').value;
+    
+        if (trainNumber && departureStation && arrivalStation && classOfTravel) {
+            db.collection('seats')
+                .where('train number', '==', trainNumber)
+                .where('station name', 'in', [departureStation, arrivalStation])
+                .orderBy('station name')
+                .get()
+                .then(querySnapshot => {
+                    if (querySnapshot.size < 2) {
+                        console.log('Not enough data for calculation.');
+                        return;
+                    }
+    
+                    let distances = [];
+                    querySnapshot.forEach(doc => {
+                        const seatsData = doc.data();
+                        distances.push(parseInt(seatsData.distance));
+                    });
+    
+                    const distance = Math.abs(distances[0] - distances[1]);
+                    const ticketPrice = calculateTicketPrice(distance, classOfTravel);
+    
+                    document.getElementById('ticket-price').innerText = `₹ ${ticketPrice}.00`;
+                    document.getElementById('pricing-distance').innerText = `Distance: ${distance} km`;
+                    document.getElementById('pricing-class').innerText = `Class of Travel: ${classOfTravel}`;
+                })
+                .catch(error => {
+                    console.error("Error fetching seats data:", error);
+                    document.getElementById('ticket-price').innerText = 'Error';
+                });
+        } else {
+            console.log('One or more fields are empty.');
+        }
+    }
+    
+    function calculateTicketPrice(distance, classOfTravel) {
+        let baseFare = 0;
+        switch (classOfTravel) {
+            case "AC":
+                baseFare = 5;
+                break;
+            case "SL":
+                baseFare = 3;
+                break;
+            case "2S":
+                baseFare = 2;
+                break;
+        }
+        return baseFare * distance;
+    }
+    
+   // Function to show the confirmation modal with the message
+function showConfirmationModal(message) {
+    document.getElementById('confirmationText').innerText = message;
+    $('#confirmationModal').modal('show');
+}
+
+// Function to hide the confirmation modal
+function hideConfirmationModal() {
+    $('#confirmationModal').modal('hide');
+}
+
+// Function to check train availability and reserve using AJAX
+function checkTrainAvailabilityAndReserve() {
+    const trainNumber = document.getElementById('train-number').value;
+    const departureStation = document.getElementById('departure-station').value;
+    const arrivalStation = document.getElementById('arrival-station').value;
+    const classOfTravel = document.getElementById('class-of-travel').value;
+    const passengerName = document.getElementById('passenger-name').value;
+    const passengerAge = document.getElementById('passenger-age').value;
+    const journeyDate = document.getElementById('journey-date').value;
+    const userId = firebase.auth().currentUser.uid; // Assuming the user is authenticated
+
+    db.collection('seats')
+        .where('train number', '==', trainNumber)
+        .where('station name', 'in', [departureStation, arrivalStation])
+        .get()
+        .then(querySnapshot => {
+            if (querySnapshot.empty) {
+                alert(`Train ${trainNumber} from ${departureStation} to ${arrivalStation} not found.`);
+                return;
+            }
+
+            let distances = [];
+            querySnapshot.forEach(doc => {
+                const seatsData = doc.data();
+                distances.push(parseInt(seatsData.distance));
+            });
+
+            const distance = Math.abs(distances[0] - distances[1]);
+            const ticketPrice = calculateTicketPrice(distance, classOfTravel);
+
+            // Update user's balance and reservation in Firestore
+            db.collection('users').doc(userId).get().then(userDoc => {
+                if (userDoc.exists) {
+                    const userData = userDoc.data();
+                    const currentBalance = userData.balance;
+
+                    if (currentBalance >= ticketPrice) {
+                        const newBalance = currentBalance - ticketPrice;
+
+                        db.collection('users').doc(userId).update({
+                            balance: newBalance
+                        }).then(() => {
+                            const transaction = {
+                                amount: ticketPrice,
+                                date: firebase.firestore.Timestamp.now(),
+                                description: `Ticket reservation for train ${trainNumber} from ${departureStation} to ${arrivalStation}`,
+                                type: 'Debit'
+                            };
+
+                            db.collection('users').doc(userId).update({
+                                transactions: firebase.firestore.FieldValue.arrayUnion(transaction)
+                            }).then(() => {
+                                db.collection('reservations').add({
+                                    user_id: userId,
+                                    passenger_name: passengerName,
+                                    passenger_age: passengerAge,
+                                    journey_date: journeyDate,
+                                    train_number: trainNumber,
+                                    departure_station: departureStation,
+                                    arrival_station: arrivalStation,
+                                    class_of_travel: classOfTravel,
+                                    ticket_price: ticketPrice
+                                }).then(() => {
+                                    showConfirmationModal(`Your ticket for train ${trainNumber} from ${departureStation} to ${arrivalStation} has been reserved.`);
+                                }).catch(error => {
+                                    console.error("Error adding reservation:", error);
+                                });
+                            }).catch(error => {
+                                console.error("Error updating user transactions:", error);
+                            });
+                        }).catch(error => {
+                            console.error("Error updating user balance:", error);
+                        });
+                    } else {
+                        alert("Insufficient balance.");
+                    }
+                } else {
+                    console.error("User data not found.");
+                }
+            }).catch(error => {
+                console.error("Error fetching user data:", error);
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching seats data:", error);
+            alert("Error fetching seats data. Please try again later.");
+        });
+        reduceSeatNumbers(trainNumber, classOfTravel, departureStation, journeyDate)
+}
+
+// Use AJAX for form submission
+document.getElementById('reservation-form').addEventListener('submit', function(event) {
+    event.preventDefault();
+    checkTrainAvailabilityAndReserve();
+});
+
+function reduceSeatNumbers(trainNumber, classOfTravel, departureStation, journeyDate) {console.log(journeyDate);
+    // Update the seat numbers in the 'seats' collection for the given train, class of travel, departure station, and journey date
+    db.collection('seats')
+        .where('train number', '==', trainNumber)
+        .where('station name', '==', departureStation)
+      
+        .get()
+        .then(querySnapshot => {
+            if (querySnapshot.empty) {
+                console.log(`No seats found for train ${trainNumber} at ${departureStation} on ${journeyDate}`);
+                return;
+            }
+
+            querySnapshot.forEach(doc => {
+                const seatData = doc.data();
+                let updatedSeats;
+                let fieldToUpdate;
+
+                switch (classOfTravel) {
+                    case 'AC':
+                        updatedSeats = parseInt(seatData.ac) - 1;
+                        fieldToUpdate = 'ac';
+                        console.log('ac updated');
+                        break;
+                    case 'Sleeper':
+                        updatedSeats = parseInt(seatData.sleeper) - 1;
+                        fieldToUpdate = 'sleeper';
+                        console.log('sleeper updated');
+                        break;
+                    case 'General':
+                        updatedSeats = parseInt(seatData.general) - 1;
+                        fieldToUpdate = 'general';
+                        console.log('general updated');
+                        break;
+                    default:
+                        console.log(`Invalid class of travel: ${classOfTravel}`);
+                        return;
+                }
+
+                // Update the seat count for the class of travel
+                db.collection('seats').doc(doc.id).update({
+                    [fieldToUpdate]: updatedSeats.toString() // Convert back to string for Firestore
+                }).then(() => {
+                    console.log(`Seat count updated for train ${trainNumber} in ${classOfTravel}: ${updatedSeats}`);
+                }).catch(error => {
+                    console.error("Error updating seat count:", error);
+                });
+            });
+        })
+        .catch(error => {
+            console.error("Error fetching seats data:", error);
+        });
+}
+
+</script>
+
+
+</body>
+</html>

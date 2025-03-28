@@ -1,0 +1,58 @@
+/* Gradient animation with a smooth transition */
+@keyframes gradient-shift {
+    0% {
+        background-position: 0% 50%;
+    }
+    100% {
+        background-position: 100% 50%;
+    }
+}
+body {
+    font-size: clamp(12px, calc(1vw + 1vh + 0.5vmin), 20px);
+}
+div {
+    padding: clamp(10px, calc(10px + (20 - 10) * ((100vw - 300px) / (1600 - 300))), 20px);
+}
+
+
+/* Gradient background with smooth animation */
+.bg-smooth-gradient {
+    background: linear-gradient(90deg, #5356FF, #378CE7, #67C6E3); /* Color palette */
+    background-size: 300% 300%; /* Large size for smooth animation */
+    animation: gradient-shift 30s linear infinite; /* Slow and continuous animation */
+}
+
+/* Search Tabs Styling */
+.search-tabs {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+}
+
+.search-tab {
+    padding: 10px 20px;
+    cursor: pointer;
+    border: 1px solid #ccc;
+    border-radius: 5px 5px 0 0;
+}
+
+.search-tab.active {
+    background-color: #378CE7;
+    color: white;
+}
+
+/* Search Form Styling */
+.search-form {
+    border: 1px solid #ccc;
+    border-radius: 0 0 5px 5px;
+    padding: 20px;
+}
+th ,td{
+    padding: 15px;
+}
+
+/* Datepicker Styling */
+.datepicker {
+    z-index: 9999 !important; /* Ensure datepicker appears on top of other elements */
+}
+

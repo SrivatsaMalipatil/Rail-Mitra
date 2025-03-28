@@ -1,0 +1,75 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Train Schedules - RailMitra</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="schedule.css">
+    <!-- Datepicker CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/css/bootstrap-datepicker.min.css">
+</head>
+<body class="bg-smooth-gradient">
+    <!-- Content Section -->
+    <div class="container mt-5">
+       <!-- Train Search Tabs -->
+       <div class="search-tabs">
+           <div class="search-tab active" id="searchByNumberTab">Search by Train Number</div>
+           <div class="search-tab" id="searchByRouteTab">Search by Source and Destination</div>
+       </div>
+       
+       <!-- Train Search Form - By Train Number -->
+       <div id="numberSearch" class="search-form">
+           <form id="searchByNumberForm">
+               <label for="trainNumber">Enter Train Number:</label>
+               <input type="text" class="form-control" id="trainNumber" name="trainNumber">
+               <button type="submit" class="btn btn-primary mt-2">Search</button>
+           </form>
+       </div>
+       
+       <!-- Train Search Form - By Source and Destination -->
+       <div id="routeSearch" class="search-form" style="display:none;">
+           <form id="searchByRouteForm">
+               <label for="source">Source:</label>
+               <input type="text" class="form-control" id="source" name="source">
+               <label for="destination">Destination:</label>
+               <input type="text" class="form-control" id="destination" name="destination">
+               <label for="date">Date:</label>
+               <input type="text" class="form-control" id="datepicker" name="date">
+               <button type="submit" class="btn btn-primary mt-2">Search</button>
+           </form>
+       </div>
+       
+       <!-- Train Schedules Section -->
+       <div class="card mt-4">
+           <div class="card-body">
+               <h2 class="card-title text-primary">Train Schedules</h2>
+               <table class="schedule-table">
+                   <thead>
+                       <tr>
+                           <th>Train Number   </th>
+                           <th>Train Name  </th>
+                           <th>station  </th>
+                           <th>  Ac  </th>
+                           <th>   Seeper       </th>
+                           <th>   general          </th>
+                           <td><a href="#" class="book-now-btn" data-train-number="${seatData['train number']}" data-station-name="${seatData['station name']}">Book Now</a></td>        
+                       </tr>
+                   </thead>
+                   <tbody>
+                       <!-- Table rows will be dynamically added here -->
+                   </tbody>
+               </table>
+           </div>
+       </div>
+    </div>
+    <!-- External JavaScript Link -->
+    <script type= "module" src="schedule.js"></script>
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datepicker/1.9.0/js/bootstrap-datepicker.min.js"></script>
+</body>
+</html>

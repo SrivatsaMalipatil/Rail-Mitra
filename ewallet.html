@@ -1,0 +1,469 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>E-Wallet</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css"/>
+    <!-- Google Fonts for Custom Font -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500&display=swap" rel="stylesheet"/>
+    <!-- Font Awesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"/>
+    <!-- Custom CSS for Styling and Gradient Background -->
+    <style>
+        body {
+            --primary-color: #5356FF; 
+            --secondary-color: #378CE7;
+            --tertiary-color: #67C6E3;
+            --background-color: #DFF5FF;
+
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color)); 
+            font-family: 'Poppins', sans-serif;
+            min-height: 100vh; 
+            padding: 20px;
+        }
+
+        .wallet-card {
+            background-color: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .wallet-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+        }
+
+        .balance {
+            text-align: center;
+            font-size: 2rem;
+            color: var(--primary-color);
+            margin-bottom: 20px;
+        }
+
+        .transaction-table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        .transaction-table th, .transaction-table td {
+            padding: 10px;
+            text-align: left;
+        }
+
+        .transaction-table th {
+            background-color: var(--secondary-color);
+            color: white;
+        }
+
+        .transaction-table td {
+            border-bottom: 1px solid #ccc;
+        }
+
+        .btn-custom {
+            background-color: var(--primary-color);
+            color: white;
+            transition: background-color 0.3s;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 10px 20px;
+            margin: 10px 5px;
+            text-decoration: none;
+            font-size: 1rem;
+        }
+
+        .btn-custom i {
+            margin-right: 8px;
+        }
+
+        .btn-custom:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .user-info {
+            text-align: right;
+            color: white;
+            margin-bottom: 20px;
+        }
+
+        .logout-btn {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .logout-btn:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .modal-dialog-slide-up {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            margin: 0;
+            max-width: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- User Info and Logout Button -->
+        <div class="user-info">
+            <span id="username">User</span>
+            <button class="logout-btn" id="logoutBtn">Logout</button>
+        </div>
+
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <!-- Wallet Card -->
+                <div class="wallet-card">
+                    <!-- Balance Information -->
+                    <div class="balance">Current Balance: ₹<span id="currentBalance">0</span></div>
+
+                    <!-- Transaction Table -->
+                    <table class="transaction-table">
+                        <thead>
+                            <tr>
+                                <th>Date</th>
+                                <th>Description</th>
+                                <th>Amount</th>
+                                <th>Type</th>
+                                <th>Card Number</th>
+                            </tr>
+                        </thead>
+                        <tbody id="transactionTableBody">
+                            <!-- Transactions will be populated here -->
+                        </tbody>
+                    </table>
+
+                    <!-- E-Wallet Options -->
+                    <div class="mt-4 text-center">
+                        <button class="btn btn-custom mx-2" id="addFundsBtn">
+                            <i class="fas fa-plus-circle"></i> Add Funds
+                        </button>
+                        <button class="btn btn-custom mx-2" id="removeFundsBtn">
+                            <i class="fas fa-minus-circle"></i> Remove Funds
+                        </button>
+                        <button class="btn btn-custom mx-2" id="showAddCardModalBtn">
+                            <i class="fas fa-credit-card"></i> Add Card
+                        </button>
+                    </div>
+                    <button class="btn btn-custom" id="payNowButton" data-amount="0">
+    <i class="fas fa-wallet"></i> Pay Now
+</button>
+<div class="balance">Payment Amount: ₹<span id="payment-amount">0.00</span></div>
+
+
+                    <!-- Card Selection -->
+                    <div class="mt-4 text-center">
+                        <label for="cardSelect">Select Card:</label>
+                        <select id="cardSelect" class="form-control d-inline-block w-auto">
+                            <!-- Options will be populated here -->
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for Adding Card -->
+    <div class="modal fade" id="addCardModal" tabindex="-1" role="dialog" aria-labelledby="addCardModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-slide-up" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="addCardModalLabel">Add Card</h5>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form id="addCardForm">
+                        <div class="form-group">
+                            <label for="cardNumber">Card Number</label>
+                            <input type="text" class="form-control" id="cardNumber" placeholder="Enter card number" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cardHolder">Card Holder</label>
+                            <input type="text" class="form-control" id="cardHolder" placeholder="Enter card holder name" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="expiryDate">Expiry Date</label>
+                            <input type="text" class="form-control" id="expiryDate" placeholder="MM/YY" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="cvv">CVV</label>
+                            <input type="text" class="form-control" id="cvv" placeholder="Enter CVV" required>
+                        </div>
+                        <button type="submit" class="btn btn-primary btn-block">Add Card</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <!-- Then include Bootstrap JS -->
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js"></script>
+    <!-- Firebase JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+    <script>
+         var firebaseConfig = {
+            apiKey: "AIzaSyCzF2lQO3f2O7BxCMStuwTZXiP5GCccH48",
+            authDomain: "railmitra-29557.firebaseapp.com",
+            projectId: "railmitra-29557",
+            storageBucket: "railmitra-29557.appspot.com",
+            messagingSenderId: "269756755900",
+            appId: "1:269756755900:web:69d475147946f789fdc5b9",
+            measurementId: "G-T0MQQ6JMLD"
+        };
+
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
+        var db = firebase.firestore();
+
+firebase.auth().onAuthStateChanged(function(user) {
+    if (user) {
+        console.log("User is logged in:", user.email);
+        document.getElementById('username').innerText = user.email;
+        loadUserData(user.uid);
+    } else {
+        console.log("User is logged out.");
+        showLoginMessage();
+        window.location.href = "login.html";
+    }
+});
+
+function showLoginMessage() {
+    var walletCard = document.querySelector('.wallet-card');
+    walletCard.innerHTML = `
+        <div class="alert alert-danger" role="alert">
+            You are not logged in. Please <a href="login.html">login</a> to access your E-Wallet.
+        </div>
+    `;
+}
+
+function loadUserData(userId) {
+    db.collection('users').doc(userId).get().then(doc => {
+        if (doc.exists) {
+            var data = doc.data();
+            document.getElementById('currentBalance').innerText = data.balance;
+            loadTransactions(userId);
+            loadCards(userId);
+        } else {
+            db.collection('users').doc(userId).set({
+                balance: 0
+            });
+        }
+    });
+}
+
+function loadTransactions(userId) {
+    db.collection('users').doc(userId).collection('transactions').orderBy('date', 'desc').get().then(querySnapshot => {
+        var tableBody = document.getElementById('transactionTableBody');
+        tableBody.innerHTML = '';
+        querySnapshot.forEach(doc => {
+            var transaction = doc.data();
+            var row = `<tr>
+                        <td>${transaction.date.toDate().toLocaleDateString()}</td>
+                        <td>${transaction.description}</td>
+                        <td>₹${transaction.amount}</td>
+                        <td>${transaction.type}</td>
+                        <td>${transaction.cardNumber}</td>
+                       </tr>`;
+            tableBody.innerHTML += row;
+        });
+    });
+}
+
+function loadCards(userId) {
+    db.collection('users').doc(userId).collection('cards').get().then(querySnapshot => {
+        var cardSelect = document.getElementById('cardSelect');
+        cardSelect.innerHTML = '<option value="">Select Card</option>';
+        querySnapshot.forEach(doc => {
+            var card = doc.data();
+            var option = `<option value="${doc.id}">${card.cardNumber} - ${card.cardHolder}</option>`;
+            cardSelect.innerHTML += option;
+        });
+    });
+}
+
+document.getElementById('addFundsBtn').addEventListener('click', function() {
+    var selectedCard = document.getElementById('cardSelect').value;
+    if (selectedCard) {
+        var amount = prompt('Enter amount to add:');
+        if (amount && !isNaN(amount)) {
+            var userId = firebase.auth().currentUser.uid;
+            updateBalance(userId, parseFloat(amount), 'Credit', selectedCard);
+        }
+    } else {
+        alert('Please select a card.');
+    }
+});
+
+document.getElementById('removeFundsBtn').addEventListener('click', function() {
+    var selectedCard = document.getElementById('cardSelect').value;
+    if (selectedCard) {
+        var amount = prompt('Enter amount to remove:');
+        if (amount && !isNaN(amount)) {
+            var userId = firebase.auth().currentUser.uid;
+            updateBalance(userId, -parseFloat(amount), 'Debit', selectedCard);
+        }
+    } else {
+        alert('Please select a card.');
+    }
+});
+
+function updateBalance(userId, amount, type, cardId) {
+    var userRef = db.collection('users').doc(userId);
+    userRef.get().then(doc => {
+        if (doc.exists) {
+            var newBalance = doc.data().balance + amount;
+            userRef.update({
+                balance: newBalance
+            }).then(() => {
+                var cardRef = userRef.collection('cards').doc(cardId);
+                cardRef.get().then(cardDoc => {
+                    if (cardDoc.exists) {
+                        var cardNumber = cardDoc.data().cardNumber;
+                        userRef.collection('transactions').add({
+                            date: firebase.firestore.Timestamp.now(),
+                            description: type === 'Credit' ? 'Added Funds' : 'Removed Funds',
+                            amount: Math.abs(amount),
+                            type: type,
+                            cardNumber: cardNumber
+                        }).then(() => {
+                            loadUserData(userId);
+                        });
+                    }
+                });
+            });
+        }
+    });
+}
+
+document.getElementById('payNowButton').addEventListener('click', function() {
+    var amountToPay = parseFloat(document.getElementById('payment-amount').innerText.replace('₹', ''));
+    if (amountToPay > 0) {
+        var userId = firebase.auth().currentUser.uid;
+        makePayment(userId, amountToPay);
+    } else {
+        alert('Please enter a valid payment amount.');
+    }
+});
+
+function makePayment(userId, amount) {
+    console.log("Attempting to make payment...");
+    var userRef = db.collection('users').doc(userId);
+    userRef.get().then(doc => {
+        if (doc.exists) {
+            var currentBalance = doc.data().balance;
+            if (currentBalance >= amount) {
+                var newBalance = currentBalance - amount;
+                userRef.update({
+                    balance: newBalance
+                }).then(() => {
+                    userRef.collection('transactions').add({
+                        date: firebase.firestore.Timestamp.now(),
+                        description: 'Payment',
+                        amount: amount,
+                        type: 'Debit',
+                        cardNumber: 'E-Wallet'
+                    }).then(() => {
+                        loadUserData(userId);
+                        // Display confirmation message
+                        console.log("Payment successful, displaying confirmation message...");
+                        showConfirmationMessage(amount);
+                    });
+                });
+            } else {
+                alert('Insufficient balance.');
+            }
+        }
+    }).catch(error => {
+        console.error("Error making payment:", error);
+    });
+}
+
+function showConfirmationMessage(amount) {
+    var confirmationDiv = document.createElement('div');
+    confirmationDiv.classList.add('alert', 'alert-success', 'text-center', 'mt-3');
+    confirmationDiv.innerHTML = `
+        <strong>Payment Successful!</strong> ₹${amount} has been debited from your account.
+    `;
+
+    var walletCard = document.querySelector('.wallet-card');
+    walletCard.appendChild(confirmationDiv);
+
+    // Automatically remove the message after 3 seconds
+    setTimeout(() => {
+        confirmationDiv.remove();
+    }, 3000);
+}
+
+document.getElementById('logoutBtn').addEventListener('click', function() {
+    firebase.auth().signOut().then(() => {
+        console.log('User logged out.');
+        showLoginMessage();
+        window.location.href = "login.html";
+    }).catch((error) => {
+        console.error('Error logging out:', error);
+    });
+});
+
+
+
+document.getElementById('showAddCardModalBtn').addEventListener('click', function() {
+    console.log("Show Add Card Modal Button clicked");
+    $('#addCardModal').modal('show');
+});
+
+document.getElementById('addCardForm').addEventListener('submit', function(event) {
+    event.preventDefault();
+    console.log("Add Card Form submitted");
+
+    const user = firebase.auth().currentUser;
+    if (user) {
+        console.log("User is authenticated:", user.uid);
+        
+        const cardNumber = document.getElementById('cardNumber').value;
+        const cardHolder = document.getElementById('cardHolder').value;
+        const expiryDate = document.getElementById('expiryDate').value;
+        const cvv = document.getElementById('cvv').value;
+
+        console.log("Card details:", { cardNumber, cardHolder, expiryDate, cvv });
+
+        firebase.firestore().collection('users').doc(user.uid).collection('cards').add({
+            cardNumber: cardNumber,
+            cardHolder: cardHolder,
+            expiryDate: expiryDate,
+            cvv: cvv
+        }).then(() => {
+            console.log("Card added to Firestore successfully");
+            alert('Card added successfully');
+            $('#addCardModal').modal('hide');
+            loadCards(user.uid);
+        }).catch(error => {
+            console.error("Error adding card: ", error);
+        });
+    } else {
+        console.log("No user is authenticated");
+    }
+});
+
+
+
+</script>
+</body>
+</html>
+

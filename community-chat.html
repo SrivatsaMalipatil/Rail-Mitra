@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Community Chat</title>
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- FontAwesome for Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <!-- Custom Styles -->
+    <link rel="stylesheet" href="community.css">
+</head>
+<body class="gradient-custom"> <!-- Gradient background -->
+    <div class="container py-5"> <!-- Bootstrap container -->
+        <h2 class="text-center text-white">Community Chat</h2> <!-- Page title -->
+
+        <!-- Chat messages section -->
+        <div class="chat-card" id="chatMessages"> <!-- Chat card -->
+            <!-- Existing messages will be dynamically loaded here -->
+        </div>
+
+  <!-- Existing HTML remains unchanged -->
+
+<!-- Modify the input field and button wrapper for better mobile interaction -->
+<div class="input-wrapper mt-4 d-flex flex-column flex-sm-row"> <!-- Changed to flex-column for mobile -->
+    <textarea class="chat-input" id="messageInput" placeholder="Write your message..." rows="1"></textarea> <!-- Input for message -->
+    <button class="send-button" id="sendButton">Send</button> <!-- Send button -->
+</div>
+
+
+    <!-- Firebase JS SDK -->
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.6.8/firebase-firestore.js"></script>
+
+    <!-- Bootstrap JS and Dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.bundle.min.js" crossorigin="anonymous"></script> <!-- Bootstrap JS -->
+
+    <!-- Custom JS -->
+    <script src="community.js"></script>
+</body>
+</html>
